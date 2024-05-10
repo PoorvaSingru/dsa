@@ -1,0 +1,88 @@
+#include <iostream>
+#include <string.h>
+using namespace std;
+struct node{
+    string title;
+    int chnos;
+    struct node* child[10];
+}*root;
+class bookTree
+{
+public:
+    void create_tree();
+    void display(node *x);
+
+    bookTree()
+    {
+        root = NULL;
+    }
+};
+void bookTree::create_tree(){
+    int books,chapters;
+    root=new node;
+    cout<<"enter the name of the book: ";
+    cin>>root->title;
+    cout<<"enter the number of chapter in the book: ";
+    cin>>chapters;
+    root->chnos=chapters;
+    for(int i=0;i<chapters;i++){
+        root->child[i]=new node;
+        cout<<"enter the name of chapter "<<i+1;
+        cin.get();
+        getline(cin,root->child[i]->title);
+        cout << "Enter number of sections in Chapter : " << root->child[i]->title;
+        cin >> root->child[i]->chnos;
+        for (int j = 0; j < root->child[i]->chnos; j++)
+        {
+            root->child[i]->child[j] = new node;
+            cout << "Enter Name of Section " << j + 1 << " : ";
+            cin.get();
+            getline(cin, root->child[i]->child[j]->title);
+        }
+    }
+}
+
+void bookTree::display(node *x){
+    int chapters;
+    chapters=x->chnos;
+    if (x!=NULL){
+        cout<<"Title of the book is: "<<x->title<<endl;
+        
+        for (int i=0;i<chapters;i++){
+
+            cout << "\nChapter " << i + 1;
+            cout << " : " << x->child[i]->title;
+            cout << "\nSections : ";
+            for (int j = 0; j < x->child[i]->chnos; j++)
+            {
+                cout << "\n"<< x->child[i]->child[j]->title<<endl;
+            }
+            
+        }
+    }
+    
+}
+int main(){
+    bookTree bt;
+    int choice;
+    while(true){
+        cout<<"1.create\n"<<"2.display\n"<<"3.quit\n"<<"enter choice: ";
+        cin>>choice;
+        switch (choice)
+        {
+        case 1:
+            bt.create_tree();
+            break;
+        case 2:
+            bt.display(root);
+            break;
+        case 3:
+            cout<<"thank you!";
+            break;
+        default:
+            cout<<"enter valid choice\n";
+            break;
+        }
+    }
+return(0);
+}
