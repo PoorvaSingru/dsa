@@ -1,0 +1,169 @@
+#include <iostream>
+using namespace std;
+class node{
+    public:
+  int data;
+  node*left;
+  node*right;
+  node(int value){
+      data=value;
+      left=right=NULL;
+  }
+};
+class bst{
+  public:
+  node*root;
+  bst(){
+      root=NULL;
+  }
+  
+  node* getroot(){
+      return root;
+  }
+  
+  void insert(int data){
+      node* t=root;
+      node*r,*p;
+        if(root==NULL){
+            p=new node(data);
+            root=p;
+            cout<<"Inserted"<<endl;
+            return;
+        }
+       
+        while(t!=NULL){
+             r=t;
+            if(t->data<data){
+                t=t->right;
+            }
+            else if(t->data>data){
+                t=t->left;
+            }
+            else{
+                return;
+            }
+        }
+            p=new node(data);
+            if(data<r->data){
+                r->left=p;
+            }
+            else{
+                r->right=p;
+            }
+          cout<<"Inserted"<<endl;  
+        
+        
+  }
+  node* search(int data){
+      node* t=root;
+      if(root==NULL){
+          cout<<"Bst is empty"<<endl;
+          return NULL;
+      }
+      while(t!=NULL){
+          if(t->data==data){
+              cout<<"Found !"<<endl;
+              return t;
+          }
+          else if(t->data>data){
+              t=t->left;
+          }
+          else{
+              t=t->right;
+          }
+          
+      }
+      cout<<"Not Found"<<endl;
+      return NULL;
+  }
+  void Inorder(node* t){
+      
+      if(t){
+          Inorder(t->left);
+          cout<<" "<<t->data<<" ";
+          Inorder(t->right);
+      }
+  }
+  void min(){
+      node* t=root;
+      
+      while(t->left!=NULL){
+          t=t->left;
+      }
+      cout<<t->data;
+      cout<<endl;
+  }
+  int max(int a,int b){
+      if(a>b){
+          return a;
+      }
+      else{
+          return b;
+      }
+  }
+  int maxnode(node* t){
+      if(t==NULL){
+          return 0;
+      }
+      return max(1+maxnode(t->left),1+maxnode(t->right));
+  }
+  void mirror(node*temp){
+      if(temp==NULL){
+          return;
+      }
+      node*ptr;
+      mirror(temp->left);
+      mirror(temp->right);
+      ptr=temp->left;
+      temp->left=temp->right;
+      temp->right=ptr;
+  }
+  
+};
+int main() {
+    
+   bst b;
+ int ch;
+ cout<<"1.Insert\n2.no of Nodes in Longest Path\n3.Minimum value\n4.Swapped Value\n5.Search\n6.Inorder Display\n7.Exit\n";
+    do{
+    cout<<"Enter your Choice : "<<endl;
+    cin>>ch;
+    switch(ch){
+        case 1:
+            cout<<"Enter the Data :";
+            int a;
+            cin>>a;
+             b.insert(a);
+            break;
+        case 2:
+            cout<<"no of nodes in longest Path : ";
+            cout<<b.maxnode(b.getroot());
+            break;
+
+        case 3:
+            cout<<"Minimum data value found : ",b.min();
+            break;
+
+        case 4:
+            cout<<"swapped"<<endl;
+            b.mirror(b.getroot());
+            break;
+
+        case 5:
+            cout<<"Enter the Data to be Searched : "<<endl;
+            cin>>a;
+            b.search(a);
+            break;
+        
+        case 6:
+            cout<<endl;
+            b.Inorder(b.getroot());
+            cout<<endl;
+            break;
+    }
+
+    }while(ch!=7);
+
+
+    return 0;
+}
