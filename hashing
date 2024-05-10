@@ -1,0 +1,60 @@
+def get_client_info():
+    """Asks the user for client's name and phone number, and returns a Client object."""
+    name = input("What's the client's name? ")
+    phone_number = input("What's their phone number? ")
+    return Client(name, phone_number)
+
+def find_phone_number(phone_book, name):
+    """Looks up a client's phone number in the phone book (hash table)."""
+    # Hash the name to find its approximate location in the phone book
+    hashed_name = hash(name) % len(phone_book)
+    # Start searching at the hashed location
+    position = hashed_name
+    # Look for the client's name or an empty slot using linear probing
+    while phone_book[position] is not None and phone_book[position][0] != name:
+        # Move to the next slot (wrap around if needed)
+        position = (position + 1) % len(phone_book)
+        # Check if the entire phone book has been searched (full)
+        if position == hashed_name:
+            return None  # Client not found (phone book full)
+    # Check if the client was found
+    if phone_book[position] is None:
+        return None  # Client not found
+    else:
+        return phone_book[position][1]  # Return phone number
+
+class Client:
+    def __init__(self, name, phone_number):
+        self.name = name
+        self.phone_number = phone_number
+
+# Create a phone book (hash table) with 10 slots (initially empty)
+phone_book = [None] * 10
+
+while True:
+    print("\nPhone Book Menu")
+    print("(A)dd a new client")
+    print("(S)earch for a client")
+    print("(Q)uit")
+    choice = input("Enter your choice (A/S/Q): ").lower()
+
+    if choice == 'q':
+        break
+    elif choice == 'a':
+        client = get_client_info()
+        # Hash the name to find its approximate location
+        hashed_name = hash(client.name) % len(phone_book)
+        # Start searching at the hashed location (linear probing for insertion)
+        position = hashed_name
+        while phone_book[position] is not None:
+            position = (position + 1) % len(phone_book)
+        # If an empty slot is found, insert the client
+        if phone_book[position] is None:
+            phone_book[position] = (client.name, client.phone_number)
+            print(f"Client {client.name} added successfully!")
+        else:
+            print(f"Phone book is full! Client {client.name} could not be added.")
+    elif choice == 's':
+        name = input("Enter the client's name to search: ")
+        phone_number = find_phone_number(phone_book, name)
+        
