@@ -1,0 +1,93 @@
+def add(s):
+    e=int(input("Enter element to add "))
+    if e not in s:
+        s.add(e)
+        
+def remove(s):
+    e=int(input("Enter element to remove "))
+    if e in s:
+        s.remove(e)
+
+def union(sA, sB):
+    setC =set()
+    for e in sA:
+        setC.add(e)
+    for e in sB:
+        setC.add(e)
+    print(setC)
+
+    
+def check(s):
+    e=int(input("Enter element to check "))
+    if e in s:
+        return True
+    else:
+        print("Not found")
+
+def size(s):
+    length=len(s)
+    print("Length is:")
+    print(length)
+    
+def intersection(sA, sB):
+    setC=set()
+    for i in sA:
+        if i in sB:
+            setC.add(i)
+    print(setC)
+    
+def diff(sA, sB):
+    setC=set()
+    for i in sA:
+        if i not in sB:
+            setC.add(i)
+    print(setC)
+
+    
+def subset(sA, sB):
+  for e in sB.get_set() :
+         if e not in sA.get_set() :
+             return False
+     return True
+
+    
+setA= set()
+n=len(setA)
+n=int(input("Enter no of elements "))
+for i in range (n):
+    i=int(input("Enter element "))
+    setA.add(i)
+print("Set A is")
+print(setA)
+
+setB= set()
+m=len(setB)
+m=int(input("Enter no of elements "))
+for i in range (m):
+    i=int(input("Enter element "))
+    setB.add(i)
+print("Set B is")
+print(setB)
+
+add(setA)
+print("After adding element to set A")
+print(setA)
+
+remove(setB)
+print("After removing element from set B")
+print(setB)
+
+print("Union is ")
+union(setA, setB)
+
+print("Check element in set A")
+check(setA)
+
+print("Size of set A")
+size(setA)
+
+print("Intesection")
+intersection(setA, setB)
+
+print("Diff of set A and set B")
+diff(setA, setB)
