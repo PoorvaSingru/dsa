@@ -57,4 +57,145 @@ while True:
     elif choice == 's':
         name = input("Enter the client's name to search: ")
         phone_number = find_phone_number(phone_book, name)
+
+
+
+
+
+
+
+
+
+
+or 
+n=10
+ht=[None]*n
+
+#Linear Probing 
+def hashfun(value):
+    return value%n
+def linearprobing(key,value):
+    index=hashfun(value)
+    i=1
+    if ht[index]==None:
+        ht[index]=(key,value)
+    else:
+        while (ht[index]!=None):
+            index=(index+i)%n
+            i=i+1
+        ht[index]=(key,value)
+def searchl(key,value):
+    index=hashfun(value)
+    while ht[index] is not None:
+        if(ht[index]==(key,value)):
+            return index
+        index=(index+1)%n
+    return None;
+def delete(key,value):
+    index=searchl(key,value)
+    if index is not None:
+        ht[index]=None
+        print("Deleted Succesfully !")
+def display():
+    print(ht)
+    
+#Quadratic Probing
+def hashfun(value):
+    return value%n
+def Quadraticprobing(key,value):
+    index=hashfun(value)
+    i=1
+    if ht[index]==None:
+        ht[index]=(key,value)
+    else:
+        while (ht[index]!=None):
+            index=(index+i**2)%n
+            i=i+1
+        ht[index]=(key,value)
+def searchq(key,value):
+    i=1
+    index=hashfun(value)
+    while ht[index] is not None:
+        if(ht[index]==(key,value)):
+            return index
+        index=(index+i**2)%n
+        i+=1
+    return None;
+def deleteq(key,value):
+    index=searchq(key,value)
+    if index is not None:
+        ht[index]=None
+        print("Deleted Succesfully !")
+def display():
+    print(ht)
+    
+ #Switch Case   
+flag1=True
+while flag1==True:
+    print("1.Linear Probing ")
+    print("2.Quadratic Probing ")
+    print("3.Exit")
+    ch1=int(input("Enter your Choice :"))
+    if ch1==1:
+        flag=True
+        while flag==True:
+            print("\n1. Insert")
+            print("2. Delete")
+            print("3. Search")
+            print("4. Display")
+            print("5. Exit")
+            ch=int(input("Enter your Chooice : "))
+            if ch==1:
+                name=str(input("Enter the name :"))
+                no=int(input("Enter the Phone No :"))
+                linearprobing(name,no)
+            elif ch==2:
+                name=str(input("Enter the name :"))
+                no=int(input("Enter the Phone No :"))
+                delete(name,no)
+            elif ch==3:
+                name=str(input("Enter the name :"))
+                no=int(input("Enter the Phone No :"))
+                print("Found At Index " , searchl(name,no))
+            elif ch==4:
+                display()
+            elif ch==5:
+                flag=False
+            else:
+                print("Invalid Choice")
+                
+    elif ch1==2:
+        flag=True
+        while flag==True:
+            print("\n1. Insert")
+            print("2. Delete")
+            print("3. Search")
+            print("4. Display")
+            print("5. Exit")
+            ch=int(input("Enter your Chooice : "))
+            if ch==1:
+                name=str(input("Enter the name :"))
+                no=int(input("Enter the Phone No :"))
+                Quadraticprobing(name,no)
+            elif ch==2:
+                name=str(input("Enter the name :"))
+                no=int(input("Enter the Phone No :"))
+                deleteq(name,no)
+            elif ch==3:
+                name=str(input("Enter the name :"))
+                no=int(input("Enter the Phone No :"))
+                print("Found At Index " , searchq(name,no))
+            elif ch==4:
+                display()
+            elif ch==5:
+                flag=False
+            else:
+                print("Invalid Choice")
+    else:
+        flag1=False
+            
+    
+    
+        
+            
         
