@@ -1,0 +1,82 @@
+#include<iostream>
+#include<string.h>
+using namespace std;
+
+struct node{
+    string name;
+    int priority;
+    node* next;
+}*head;
+
+class hospital
+{
+    public:
+    node* t1;
+    hospital()
+    {
+        head=NULL;
+    }
+    void insertp()
+    {
+        node *paitent=new node;
+        cout<<"Enter name: ";
+        cin>>paitent->name;
+        cout<<"Enter priotity (0-Top, 1-Medium, 2-Least)";
+        cin>>paitent->priority;
+        paitent->next=NULL;
+
+        if(head==NULL || paitent->priority<head->priority)
+        {
+            paitent->next=head;
+            head=paitent;
+        }
+        else{
+            t1=head;
+            while(t1->next!=NULL && t1->next->priority<= paitent->priority)
+            {
+                t1=t1->next;
+            }
+            paitent->next=t1->next;
+            t1->next=paitent;
+        }
+    }
+
+    void servep()
+    {
+        cout<<"Serving on the basis of priority"<<endl;
+        node *curr=head;
+
+        while(curr!=NULL)
+        {
+            cout<<"(Paitent name:"<<curr->name<<", Priority:"<<curr->priority<<")"<<endl;
+            curr=curr->next;
+        }
+    }
+};
+int main()
+{
+    hospital p;
+    int choice;
+    int ans;
+
+    do{
+        cout<<"Do you want to insert(1) or serve(2) ";
+        cin>>choice;
+
+        switch (choice)
+        {
+        case 1:
+            p.insertp();
+            break;
+        
+        case 2:
+            p.servep();
+            break;
+        }
+
+    cout<<"Continue? ";
+    cin>>ans;
+    }while(ans==1);
+
+    return 0;
+}
