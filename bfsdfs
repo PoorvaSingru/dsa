@@ -128,4 +128,147 @@ obj.bfs();
 return 0;
 
 
+
+
+or
+
+
+#include<iostream>
+#include<stack>
+#include<queue>
+using namespace std;
+
+class graph_list
+{
+	private:
+	int n;
+	struct node
+	{
+		int data;
+		node *next;
+	}*head[10];
+	
+	public:
+	stack<int> s;
+	queue<int> q;
+	graph_list()
+	{
+		cout<<"Enter n ";
+		cin>>n;
+		
+		for(int i=0; i<n; i++)
+			head[i]=NULL;
+	}
+	void create();
+	void dfs();
+	void bfs();
+};
+
+void graph_list::create()
+{
+	node *curr, *temp;
+	int m;
+	
+	for(int i=0; i<n; i++)
+	{
+		head[i]=new node;
+		head[i]->next=NULL;
+		
+		cout<<"Enter vertex data ";
+		cin>>head[i]->data;
+		curr=head[i];
+		
+		cout<<"How many adj nodes do you want to enter? ";
+		cin>>m;
+		
+		for(int j=1; j<=m; j++)
+		{
+			temp= new node;
+			temp->next=NULL;
+			cout<<"Enter edge data ";
+			cin>>temp->data;
+			curr->next=temp;
+			curr=curr->next;
+		}
+	}
+}
+
+void graph_list::dfs()
+{ 
+	int sv, visited[10], num;
+	node *t;
+	cout<<"Enter starting value";
+	cin>>sv;
+	
+	for(int i=0; i<n; i++)
+		visited[i]=0;
+		
+	s.push(sv);
+	
+	while(!s.empty())
+	{
+		num=s.top();
+		s.pop();
+		if(visited[num]==0)
+		{
+			cout<<num;
+			visited[num]=1;
+		}
+		
+		t=head[num];
+		
+		while(t!=NULL)
+		{
+			if(visited[t->data]==0)
+				s.push(t->data);
+				
+			t=t->next;
+		}
+	}
+}	
+
+void graph_list::bfs()
+{ 
+	int sv, visited[10], num;
+	node *t;
+	cout<<"Enter starting value";
+	cin>>sv;
+	
+	for(int i=0; i<n; i++)
+		visited[i]=0;
+		
+	q.push(sv);
+	
+	while(!q.empty())
+	{
+		num=q.front();
+		q.pop();
+		if(visited[num]==0)
+		{
+			cout<<num;
+			visited[num]=1;
+		}
+		
+		t=head[num];
+		
+		while(t!=NULL)
+		{
+			if(visited[t->data]==0)
+				q.push(t->data);
+				
+			t=t->next;
+		}
+	}
+}	
+
+int main()
+{
+	graph_list obj;
+	obj.create();
+	obj.dfs();
+	obj.bfs();
+}
+
+
+
 }
