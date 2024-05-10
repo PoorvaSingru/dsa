@@ -1,0 +1,135 @@
+#include <iostream>
+#include <fstream>
+#include <string>
+
+using namespace std;
+
+struct Student {
+  int rollNo;
+  string name;
+  string division;
+  string address;
+};
+
+void addStudent(ofstream& outfile) {
+  Student student;
+
+  cout << "Enter Roll Number: ";
+  cin >> student.rollNo;
+
+  cout << "Enter Name: ";
+  cin.ignore(); // Consume newline character from previous input
+  getline(cin, student.name);
+
+  cout << "Enter Division: ";
+  getline(cin, student.division);
+
+  cout << "Enter Address: ";
+  getline(cin, student.address);
+
+  outfile.write(reinterpret_cast<char*>(&student), sizeof(student));
+
+  cout << "Student record added successfully!\n";
+}
+
+bool deleteStudent(ifstream& infile, ofstream& outfile, int rollNo) {
+  Student student;
+  bool found = false;
+
+  // Create a temporary file to store non-deleted records
+  ofstream tempFile("temp.dat", ios::binary);
+
+  while (infile.read(reinterpret_cast<char*>(&student), sizeof(student))) {
+    if (student.rollNo != rollNo) {
+      tempFile.write(reinterpret_cast<char*>(&student), sizeof(student));
+    } else {
+      found = true;
+      cout << "Student record with Roll Number " << rollNo << " deleted.\n";
+    }
+  }
+
+  infile.close();
+  tempFile.close();
+
+  // Remove the original file and rename the temporary file
+  remove("student.dat");
+  rename("temp.dat", "student.dat");
+
+  outfile.open("student.dat", ios::out | ios::binary); // Overwrite existing file
+
+  return found;
+}
+
+void displayStudent(ifstream& infile, int rollNo) {
+  Student student;
+  bool found = false;
+
+  while (infile.read(reinterpret_cast<char*>(&student), sizeof(student))) {
+    if (student.rollNo == rollNo) {
+      cout << "\nRoll Number: " << student.rollNo << endl;
+      cout << "Name: " << student.name << endl;
+      cout << "Division: " << student.division << endl;
+      cout << "Address: " << student.address << endl;
+      found = true;
+      break;
+    }
+  }
+
+  if (!found) {
+    cout << "Student record with Roll Number " << rollNo << " not found.\n";
+  }
+}
+
+int main() {
+  int choice, rollNo;
+  ofstream outfile("student.dat", ios::out | ios::binary); // Create or open in append mode
+  ifstream infile("student.dat", ios::binary);
+
+  if (!outfile.is_open()) {
+    cerr << "Error opening output file!\n";
+    return 1;
+  }
+
+  if (!infile.is_open()) {
+    cout << "No existing student data found.\n";
+  }
+
+  do {
+    cout << "\nMenu:\n";
+    cout << "1. Add Student\n";
+    cout << "2. Delete Student\n";
+    cout << "3. Display Student Information\n";
+    cout << "4. Exit\n";
+    cout << "Enter your choice: ";
+    cin >> choice;
+
+    switch (choice) {
+      case 1:
+        addStudent(outfile);
+        break;
+      case 2:
+        cout << "Enter Roll Number of student to delete: ";
+        cin >> rollNo;
+        if (deleteStudent(infile, outfile, rollNo)) {
+          infile.open("student.dat", ios::binary); // Reopen for reading after deletion
+        }
+        break;
+      case 3:
+        cout << "Enter Roll Number of student to display: ";
+        cin >> rollNo;
+        displayStudent(infile, rollNo);
+        break;
+      case 4:
+        cout << "Exiting...\n";
+        break;
+      default:
+        cout << "Invalid choice!\n";
+    }
+  } while (choice != 4);
+
+  outfile.close();
+  infile.close();
+
+  return 0;
+}
+
